@@ -1,10 +1,6 @@
 #include "AllTypeStack.h"
 #include <stdlib.h>
 
-//int* atStack = 0;
-//int sp = -1;
-//int stSize = 0;
-//int stLength = 0;
 
 void createStack(Stack** stack, int capacity)
 {
