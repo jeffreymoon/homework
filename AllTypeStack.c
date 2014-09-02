@@ -1,58 +1,55 @@
 #include "AllTypeStack.h"
 #include <stdlib.h>
 
-int** atStack = 0;
-int sp = -1;
-int stSize = 0;
-int stLength = 0;
+//int* atStack = 0;
+//int sp = -1;
+//int stSize = 0;
+//int stLength = 0;
 
-void createStack(int stackLength)
+void createStack(Stack** stack, int capacity)
 {
-    *atStack = (int*)calloc(stackLength, sizeof(void*));
-    stLength = stackLength;
+    (*stack) = (Stack*)malloc(sizeof(Stack));
+    (*stack)->Nodes = (Node*)malloc(sizeof(Node) * capacity);
+    (*stack)->capacity = capacity;
+    (*stack)->sp = 0;
 }
 
-void destroyStack()
+void destroyStack(Stack* stack)
 {
-    free(atStack);
-    atStack = 0;
-    sp = -1;
-    stSize = 0;
+    free(stack->Nodes);
+    free(stack);
 }
 
-int pop()
+int pop(Stack* stack)
 {
     int result;
-    if(isEmpty())
+    if(isEmpty(stack))
     {
         return 0;
     }
     else 
     {
-        result = atStack[sp];
-        sp--;
-        stSize--;
+        (stack->sp)--;
+        result = (stack->Nodes)[stack->sp].data;
         return result;
     }
 }
 
-BOOL push(void* num)
+BOOL push(Stack* stack, int num)
 {
-    if(isFull()) {
+    if(isFull(stack)) {
         return FALSE;
     }
     else {
-        sp++;
-        stSize++;
-        atStack[sp] = (void*)malloc(sizeof(num));
-        atStack[sp] = *num;
+        (stack->Nodes)[stack->sp].data = num;
+        (stack->sp)++;
         return TRUE;
     }
 }
 
-BOOL isEmpty()
+BOOL isEmpty(Stack* stack)
 {
-    if(0 == stSize) {
+    if(0 == stack->sp) {
         return TRUE;
     }
     else {
@@ -60,9 +57,9 @@ BOOL isEmpty()
     }
 }
 
-BOOL isFull()
+BOOL isFull(Stack* stack)
 {
-    if(stLength <= stSize) {
+    if(stack->capacity <= stack->sp) {
         return TRUE;
     }
     else {
